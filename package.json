@@ -1,8 +1,8 @@
 {
-  "name": "gladys-integration-template-js",
+  "name": "gladys-imgw",
   "version": "1.0.0",
   "private": true,
-  "description": "Official starter template to build an external integration for Gladys Assistant with the JavaScript SDK.",
+  "description": "Gladys Assistant external integration: water levels and alert levels of Polish rivers and lakes (IMGW-PIB).",
   "type": "module",
   "main": "index.js",
   "scripts": {

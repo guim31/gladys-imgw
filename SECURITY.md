@@ -30,6 +30,18 @@ Gladys before reporting a problem.
 
 In scope: the code of this repository and the Docker image it publishes.
 
+What the integration handles:
+
+- **Stored in `/data`** (`/data/imgw.json`): what it learnt about the followed stations (id,
+  name, river, province, coordinates of the station, warning and alarm levels), the last
+  readings and the side of each threshold last seen. No secret, no account, no token: the
+  service needs none. The **house coordinates** are read from Gladys (manifest
+  `location: true`) only to find the nearest stations inside the container; they are never
+  sent, stored nor logged.
+- **Network**: HTTPS GET requests to one public open-data service only,
+  `danepubliczne.imgw.pl` (`/api/data/hydro/`, the list of every station with its readings).
+  Nothing listens on the network.
+
 Out of scope: Gladys Assistant itself (see its
 [security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+and the IMGW-PIB service.

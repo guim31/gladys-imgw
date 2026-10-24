@@ -31,16 +31,19 @@ pushing.
 ## Architecture
 
 ```
-index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
-src/scenes.js                     scene action handlers (manifest `scene_actions`)
-src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+index.js                          SDK wiring only (handlers registered in src/app.js)
+src/app.js                        registers every SDK handler on the monitor, action and widget
+src/monitor.js                    followed stations, refresh cycles, states, scene triggers
+src/imgw.js                       IMGW-PIB public data client and parsing (level, flow, temperature, thresholds)
+src/devices.js                    Gladys device of a station (features, names, external ids)
+src/search.js                     "Find stations" configuration action
+src/widgets.js                    dashboard widget `stations`
+src/messages.js                   texts sent from the container, four languages
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
-gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
-test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
+src/http.js, geo.js, store.js     GET JSON, distances, /data persistence
+gladys-assistant-integration.json manifest: config_schema, action, scene triggers, widget
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (same sections)
+test/                             node --test, against the SDK's fake Gladys and a recorded answer
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
 
@@ -70,8 +73,10 @@ test/                             node --test, against the SDK's fake Gladys (in
   `type: "provider"`: 5.1.0). `test/manifest.test.js` ties the manifest to the
   code (defaults, action, scene and widget handlers): change both sides
   together.
-- **User-facing text** is bilingual (English and French): action messages,
-  manifest texts, and `docs/en.md` / `docs/fr.md`, kept in sync.
+- **User-facing text** is in four languages (English, French, German with
+  "du", Spanish with "usted"): action messages, manifest texts, widget texts,
+  feature names, and `docs/{en,fr,de,es}.md`, kept in sync
+  (`test/i18n.test.js`).
 - **Style.** Prettier formats, ESLint catches mistakes. Comments explain why,
   in English. Tests never touch the network.
 
@@ -233,3 +238,40 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## IMGW-PIB (propre à cette intégration)
+
+- API publique sans clé : `https://danepubliczne.imgw.pl/api/data/hydro/`, **une seule requête
+  par cycle** (~550 ko, 913 stations le 24/10/2026) : chaque station avec ses coordonnées, ses
+  seuils (`stan_ostrzegawczy`, `stan_alarmowy`, en cm) et ses dernières mesures, chacune avec sa
+  date (`stan_wody` + `stan_wody_data_pomiaru`, `przeplyw` + `przeplyw_data`,
+  `temperatura_wody` + `temperatura_wody_data_pomiaru`). Tout est en chaînes (`"108"`, `"0.64"`).
+  La même réponse sert de liste de stations (noms, recherche, maison) : pas de référentiel à part.
+  `/hydro/id/<id>` existe aussi (tableau d'un élément), non utilisé. `hydro2` répond vide.
+- **Les dates sont en UTC**, sans fuseau écrit : vérifié le 24/10/2026 (une mesure de 04:00
+  servie à 04:15 UTC ; la température de l'eau est relevée à 06:00, l'heure synoptique). La
+  bibliothèque `imgw_pib` de HA les lit en heure de Varsovie, à tort (2 h d'écart l'été).
+- Validité : 6 h pour la hauteur (comme HA), **30 h** pour le débit (calculé plus tard à
+  certaines stations) et la température (une mesure par jour, ~110 stations). Le silence d'une
+  station se juge sur la hauteur, ou sur la température pour les stations de lac qui n'ont
+  qu'elle (Wigry).
+- Seuils : ~600 stations ont les deux, aucune n'en a qu'un. `alert_level` en `risk/integer` 0/1/2
+  (atteint dès l'égalité, comme le fait l'IMGW-PIB). Déclencheur `threshold_crossed` : hystérésis
+  de 2 cm à la descente ; une descente à travers les deux seuils publie l'alarme d'abord ; un
+  seuil modifié par l'IMGW-PIB est repris sans déclencher.
+- **~30 stations sont placées en 0, 0** (`lat`/`lon` à `"0"`) : traitées comme sans position, donc
+  jamais choisies « autour de ma maison ». 34 noms sont portés par plusieurs stations (Krosno…) :
+  un nom ambigu n'est pas pris au hasard, l'état de connexion demande le cours d'eau
+  (`Krosno Wisłok`) ou l'identifiant.
+- `rzeka` vaut `-` pour les stations de la côte ; les abréviations `Jez.` et `Zb.` sont écrites en
+  entier (comme HA). « ł » n'a pas de décomposition Unicode : `normalizeName` le remplace à la main.
+- La page d'une station sur la carte (`hydro.imgw.pl/station/hydro/<id>`) répond **404** en accès
+  direct (application Angular sans repli serveur) : le widget pointe vers la carte.
+- `hydro-back.imgw.pl` (seuils détaillés, utilisé par HA) répond 403 depuis la France : inutile, les
+  seuils sont dans `/hydro/`. Les avertissements hydrologiques (`/warningshydro/`) sont donnés par
+  bassin (`kod_zlewni`) et voïvodie, sans station : HA les rattache par un appariement approximatif
+  du nom de rivière. Écartés de la 1.0.
+- **Conditions d'utilisation** (regulamin) : gratuites pour un usage privé ; mention obligatoire
+  « Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut
+  Badawczy », plus « …zostały przetworzone » pour des données traitées (niveau d'alerte, tendance).
+  Les deux sont dans la section « about » du manifeste, les docs (testé) et le README.

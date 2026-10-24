@@ -1,177 +1,675 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "IMGW-PIB",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Water levels, flows and alert levels of Polish rivers and lakes (IMGW-PIB).",
+    "fr": "Hauteurs, débits et niveaux d'alerte des rivières et lacs de Pologne (IMGW-PIB).",
+    "de": "Wasserstände, Abflüsse und Alarmstufen der Flüsse und Seen Polens (IMGW-PIB).",
+    "es": "Niveles, caudales y niveles de alerta de los ríos y lagos de Polonia (IMGW-PIB)."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
+  "docker_image": "ghcr.io/guim31/gladys-imgw:1.0.0",
   "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-imgw/main/cover.png",
+  "categories": ["environment"],
+  "transports": ["cloud"],
+  "location": true,
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "Your stations",
+        "fr": "Vos stations",
+        "de": "Deine Stationen",
+        "es": "Sus estaciones"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "Follow hydrological stations of Poland: by id or name, or the nearest ones to your house. \"Find stations\" below lists them with their river and current level. Save, then create the devices in the Discover tab.",
+        "fr": "Suivez des stations hydrologiques de Pologne : par identifiant ou par nom, ou les plus proches de votre maison. « Chercher des stations » ci-dessous les liste avec leur cours d'eau et leur niveau actuel. Enregistrez, puis créez les appareils dans l'onglet Découverte.",
+        "de": "Verfolge hydrologische Stationen in Polen: per ID oder Name, oder die nächsten zu deinem Haus. „Stationen suchen“ unten listet sie mit ihrem Gewässer und dem aktuellen Wasserstand auf. Speichere und lege dann die Geräte im Tab „Entdecken“ an.",
+        "es": "Siga estaciones hidrológicas de Polonia: por identificador o nombre, o las más cercanas a su casa. «Buscar estaciones» más abajo las enumera con su río y su nivel actual. Guarde y cree los dispositivos en la pestaña Descubrir."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://github.com/guim31/gladys-imgw/blob/main/docs/en.md",
+          "label": {
+            "en": "Setup guide",
+            "fr": "Guide d'installation",
+            "de": "Installationsanleitung",
+            "es": "Guía de instalación"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "key": "about",
+      "type": "section",
+      "label": {
+        "en": "Sources and limits",
+        "fr": "Sources et limites",
+        "de": "Quellen und Grenzen",
+        "es": "Fuentes y límites"
       },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
-      "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
-    },
-    {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
       "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
+        "en": "„Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy”, data processed (alert level, trend). Free for private use, no account. Raw values, not a flood warning service: official warnings prevail. Not affiliated with IMGW-PIB.",
+        "fr": "„Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy”, données traitées (niveau d'alerte, tendance). Libres pour un usage privé. Valeurs brutes, pas un service d'alerte crues : les alertes officielles priment. Non affiliée à l'IMGW-PIB.",
+        "de": "„Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy”, Daten verarbeitet (Alarmstufe, Tendenz). Frei für private Nutzung, ohne Konto. Rohdaten, kein Hochwasserwarndienst: Amtliche Warnungen haben Vorrang. Nicht mit dem IMGW-PIB verbunden.",
+        "es": "„Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy”, datos procesados (nivel de alerta, tendencia). Libres para uso privado. Valores brutos, no un servicio de alertas: prevalecen los avisos oficiales. Sin afiliación con el IMGW-PIB."
       },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
-    },
-    {
-      "key": "unit",
-      "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
-      "required": false,
-      "default": "celsius",
-      "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
+      "links": [
+        {
+          "url": "https://hydro.imgw.pl/",
+          "label": {
+            "en": "IMGW-PIB hydrological map",
+            "fr": "Carte hydrologique de l'IMGW-PIB",
+            "de": "Hydrologische Karte des IMGW-PIB",
+            "es": "Mapa hidrológico del IMGW-PIB"
+          }
+        }
       ]
     },
     {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "key": "stations",
+      "type": "string",
+      "label": {
+        "en": "Stations",
+        "fr": "Stations",
+        "de": "Stationen",
+        "es": "Estaciones"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Station ids (152210170) or station names, separated by commas. A name shared by several stations takes its river: Krosno Wisłok.",
+        "fr": "Identifiants de station (152210170) ou noms de station, séparés par des virgules. Un nom porté par plusieurs stations prend son cours d'eau : Krosno Wisłok.",
+        "de": "Stations-IDs (152210170) oder Stationsnamen, durch Kommas getrennt. Ein Name, den mehrere Stationen tragen, bekommt sein Gewässer dazu: Krosno Wisłok.",
+        "es": "Identificadores de estación (152210170) o nombres de estación, separados por comas. Un nombre que llevan varias estaciones se completa con su río: Krosno Wisłok."
+      },
+      "placeholder": {
+        "en": "e.g. 152210170, Trestno",
+        "fr": "ex. 152210170, Trestno",
+        "de": "z. B. 152210170, Trestno",
+        "es": "p. ej. 152210170, Trestno"
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": ""
+    },
+    {
+      "key": "around_home",
+      "type": "select",
+      "label": {
+        "en": "Around my house",
+        "fr": "Autour de ma maison",
+        "de": "Rund um mein Haus",
+        "es": "Alrededor de mi casa"
+      },
+      "description": {
+        "en": "Also follow the 3 nearest stations that send readings, within this distance of the location of your house in Gladys.",
+        "fr": "Suivre aussi les 3 stations les plus proches qui envoient des mesures, à cette distance au plus de la position de votre maison dans Gladys.",
+        "de": "Verfolge auch die 3 nächsten Stationen, die Messwerte senden, höchstens in dieser Entfernung vom Standort deines Hauses in Gladys.",
+        "es": "Seguir también las 3 estaciones más cercanas que envían mediciones, como máximo a esta distancia de la ubicación de su casa en Gladys."
+      },
+      "required": false,
+      "default": "0",
+      "options": [
+        {
+          "value": "0",
+          "label": {
+            "en": "No",
+            "fr": "Non",
+            "de": "Nein",
+            "es": "No"
+          }
+        },
+        {
+          "value": "10",
+          "label": {
+            "en": "10 km",
+            "fr": "10 km",
+            "de": "10 km",
+            "es": "10 km"
+          }
+        },
+        {
+          "value": "20",
+          "label": {
+            "en": "20 km",
+            "fr": "20 km",
+            "de": "20 km",
+            "es": "20 km"
+          }
+        },
+        {
+          "value": "50",
+          "label": {
+            "en": "50 km",
+            "fr": "50 km",
+            "de": "50 km",
+            "es": "50 km"
+          }
+        }
+      ]
+    },
+    {
+      "key": "refresh_interval",
+      "type": "select",
+      "label": {
+        "en": "Refresh interval",
+        "fr": "Fréquence de mise à jour",
+        "de": "Aktualisierungsintervall",
+        "es": "Intervalo de actualización"
+      },
+      "description": {
+        "en": "Stations send a water level every 10 to 60 minutes, published by IMGW-PIB about half an hour later. One request covers every station.",
+        "fr": "Les stations envoient une hauteur toutes les 10 à 60 minutes, publiée par l'IMGW-PIB environ une demi-heure plus tard. Une seule requête couvre toutes les stations.",
+        "de": "Die Stationen senden alle 10 bis 60 Minuten einen Wasserstand, den das IMGW-PIB etwa eine halbe Stunde später veröffentlicht. Eine Anfrage deckt alle Stationen ab.",
+        "es": "Las estaciones envían un nivel cada 10 a 60 minutos, publicado por el IMGW-PIB una media hora después. Una sola solicitud cubre todas las estaciones."
+      },
+      "required": false,
+      "default": "30",
+      "options": [
+        {
+          "value": "20",
+          "label": {
+            "en": "Every 20 minutes",
+            "fr": "Toutes les 20 minutes",
+            "de": "Alle 20 Minuten",
+            "es": "Cada 20 minutos"
+          }
+        },
+        {
+          "value": "30",
+          "label": {
+            "en": "Every 30 minutes",
+            "fr": "Toutes les 30 minutes",
+            "de": "Alle 30 Minuten",
+            "es": "Cada 30 minutos"
+          }
+        },
+        {
+          "value": "60",
+          "label": {
+            "en": "Every hour",
+            "fr": "Toutes les heures",
+            "de": "Jede Stunde",
+            "es": "Cada hora"
+          }
+        }
+      ]
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "label": {
+        "en": "Language of the feature names",
+        "fr": "Langue des noms de fonctionnalités",
+        "de": "Sprache der Funktionsnamen",
+        "es": "Idioma de los nombres de las funciones"
+      },
+      "description": {
+        "en": "Names given to the features of new devices (Water level, Flow…), and language of their texts and of the scene variables.",
+        "fr": "Noms donnés aux fonctionnalités des nouveaux appareils (Hauteur d'eau, Débit…), et langue de leurs textes et des variables de scène.",
+        "de": "Namen der Funktionen neuer Geräte (Wasserstand, Abfluss…) sowie Sprache ihrer Texte und der Szenenvariablen.",
+        "es": "Nombres dados a las funciones de los nuevos dispositivos (Nivel del agua, Caudal…), e idioma de sus textos y de las variables de escena."
+      },
+      "required": false,
+      "default": "fr",
+      "options": [
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
-    },
-    {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
+      "key": "search_stations",
+      "label": {
+        "en": "Find stations",
+        "fr": "Chercher des stations",
+        "de": "Stationen suchen",
+        "es": "Buscar estaciones"
+      },
+      "description": {
+        "en": "Lists stations with their id, river, distance and current water level: around your house, by name, by river, by province or by id.",
+        "fr": "Liste les stations avec leur identifiant, leur cours d'eau, leur distance et leur hauteur d'eau actuelle : autour de votre maison, par nom, par cours d'eau, par voïvodie ou par identifiant.",
+        "de": "Listet Stationen mit ID, Gewässer, Entfernung und aktuellem Wasserstand auf: rund um dein Haus, nach Name, nach Gewässer, nach Woiwodschaft oder nach ID.",
+        "es": "Enumera las estaciones con su identificador, río, distancia y nivel actual: alrededor de su casa, por nombre, por río, por voivodato o por identificador."
+      },
+      "timeout_seconds": 60,
       "fields": [
         {
-          "key": "device",
+          "key": "query",
+          "type": "string",
+          "label": {
+            "en": "What",
+            "fr": "Quoi",
+            "de": "Was",
+            "es": "Qué"
+          },
+          "description": {
+            "en": "Empty: around your house. Or a station name (Wrocław), a river (Wisła, Odra), both (Odra Słubice), a province (dolnośląskie) or a station id.",
+            "fr": "Vide : autour de votre maison. Ou un nom de station (Wrocław), un cours d'eau (Wisła, Odra), les deux (Odra Słubice), une voïvodie (dolnośląskie) ou un identifiant.",
+            "de": "Leer: rund um dein Haus. Oder ein Stationsname (Wrocław), ein Gewässer (Wisła, Odra), beides (Odra Słubice), eine Woiwodschaft (dolnośląskie) oder eine Stations-ID.",
+            "es": "Vacío: alrededor de su casa. O un nombre de estación (Wrocław), un río (Wisła, Odra), ambos (Odra Słubice), un voivodato (dolnośląskie) o un identificador."
+          },
+          "placeholder": {
+            "en": "e.g. Wisła",
+            "fr": "ex. Wisła",
+            "de": "z. B. Wisła",
+            "es": "p. ej. Wisła"
+          },
+          "required": false
+        },
+        {
+          "key": "radius",
           "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "label": {
+            "en": "Distance around the house",
+            "fr": "Distance autour de la maison",
+            "de": "Entfernung um das Haus",
+            "es": "Distancia alrededor de la casa"
+          },
+          "description": {
+            "en": "20 km when empty.",
+            "fr": "20 km si vide.",
+            "de": "20 km, wenn leer.",
+            "es": "20 km si está vacío."
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "10",
+              "label": {
+                "en": "10 km",
+                "fr": "10 km",
+                "de": "10 km",
+                "es": "10 km"
+              }
+            },
+            {
+              "value": "20",
+              "label": {
+                "en": "20 km",
+                "fr": "20 km",
+                "de": "20 km",
+                "es": "20 km"
+              }
+            },
+            {
+              "value": "50",
+              "label": {
+                "en": "50 km",
+                "fr": "50 km",
+                "de": "50 km",
+                "es": "50 km"
+              }
+            },
+            {
+              "value": "100",
+              "label": {
+                "en": "100 km",
+                "fr": "100 km",
+                "de": "100 km",
+                "es": "100 km"
+              }
+            }
+          ]
         }
       ]
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "threshold_crossed",
+      "label": {
+        "en": "Warning or alarm level crossed",
+        "fr": "Niveau de vigilance ou d'alarme franchi",
+        "de": "Warn- oder Alarmstufe überschritten",
+        "es": "Nivel de aviso o de alarma cruzado"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "The water level of a followed station reaches its warning or alarm level (stan ostrzegawczy, stan alarmowy), or falls back below it.",
+        "fr": "La hauteur d'une station suivie atteint son niveau de vigilance ou d'alarme (stan ostrzegawczy, stan alarmowy), ou repasse en dessous.",
+        "de": "Der Wasserstand einer verfolgten Station erreicht ihre Warn- oder Alarmstufe (stan ostrzegawczy, stan alarmowy) oder fällt wieder darunter.",
+        "es": "El nivel de una estación seguida alcanza su nivel de aviso o de alarma (stan ostrzegawczy, stan alarmowy), o vuelve a bajar de él."
       },
       "fields": [
         {
-          "key": "device",
+          "key": "station",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
+          "label": {
+            "en": "Station",
+            "fr": "Station",
+            "de": "Station",
+            "es": "Estación"
+          }
         },
         {
-          "key": "target",
+          "key": "threshold",
           "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
+          "label": {
+            "en": "Level",
+            "fr": "Niveau",
+            "de": "Stufe",
+            "es": "Nivel"
+          },
           "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
+            {
+              "value": "warning",
+              "label": {
+                "en": "Warning level (stan ostrzegawczy)",
+                "fr": "Niveau de vigilance (stan ostrzegawczy)",
+                "de": "Warnstufe (stan ostrzegawczy)",
+                "es": "Nivel de aviso (stan ostrzegawczy)"
+              }
+            },
+            {
+              "value": "alarm",
+              "label": {
+                "en": "Alarm level (stan alarmowy)",
+                "fr": "Niveau d'alarme (stan alarmowy)",
+                "de": "Alarmstufe (stan alarmowy)",
+                "es": "Nivel de alarma (stan alarmowy)"
+              }
+            }
+          ]
+        },
+        {
+          "key": "direction",
+          "type": "multi_select",
+          "label": {
+            "en": "Direction",
+            "fr": "Sens",
+            "de": "Richtung",
+            "es": "Sentido"
+          },
+          "options": [
+            {
+              "value": "rising",
+              "label": {
+                "en": "Reached",
+                "fr": "Atteint",
+                "de": "Erreicht",
+                "es": "Alcanzado"
+              }
+            },
+            {
+              "value": "falling",
+              "label": {
+                "en": "Falling back below",
+                "fr": "Repasse en dessous",
+                "de": "Fällt darunter",
+                "es": "Vuelve a bajar"
+              }
+            }
           ]
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "station_name",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "Station name",
+            "fr": "Nom de la station",
+            "de": "Name der Station",
+            "es": "Nombre de la estación"
+          }
+        },
+        {
+          "key": "river",
+          "type": "string",
+          "label": {
+            "en": "River or lake",
+            "fr": "Cours d'eau ou lac",
+            "de": "Gewässer",
+            "es": "Río o lago"
+          }
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "label": {
+            "en": "Water level (cm)",
+            "fr": "Hauteur d'eau (cm)",
+            "de": "Wasserstand (cm)",
+            "es": "Nivel del agua (cm)"
+          }
+        },
+        {
+          "key": "threshold",
+          "type": "string",
+          "label": {
+            "en": "Level code (warning, alarm)",
+            "fr": "Code du niveau (warning, alarm)",
+            "de": "Kürzel der Stufe (warning, alarm)",
+            "es": "Código del nivel (warning, alarm)"
+          }
+        },
+        {
+          "key": "threshold_name",
+          "type": "string",
+          "label": {
+            "en": "Level, in words",
+            "fr": "Niveau, en toutes lettres",
+            "de": "Stufe, ausgeschrieben",
+            "es": "Nivel, en palabras"
+          }
+        },
+        {
+          "key": "threshold_value",
+          "type": "number",
+          "label": {
+            "en": "Value of the level (cm)",
+            "fr": "Valeur du niveau (cm)",
+            "de": "Höhe der Stufe (cm)",
+            "es": "Valor del nivel (cm)"
+          }
+        },
+        {
+          "key": "direction",
+          "type": "string",
+          "label": {
+            "en": "Direction (rising, falling)",
+            "fr": "Sens (rising, falling)",
+            "de": "Richtung (rising, falling)",
+            "es": "Sentido (rising, falling)"
+          }
         }
       ]
-    }
-  ],
-  "scene_actions": [
+    },
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "readings_stopped",
+      "label": {
+        "en": "Station stopped sending readings",
+        "fr": "Station muette",
+        "de": "Station sendet keine Messwerte mehr",
+        "es": "La estación dejó de enviar mediciones"
       },
-      "timeout_seconds": 15,
+      "description": {
+        "en": "A followed station has sent no new water level for 6 hours (failure, maintenance, station damaged by a flood…).",
+        "fr": "Une station suivie n'a envoyé aucune nouvelle hauteur depuis 6 heures (panne, maintenance, station endommagée par une crue…).",
+        "de": "Eine verfolgte Station hat seit 6 Stunden keinen neuen Wasserstand gesendet (Ausfall, Wartung, durch Hochwasser beschädigte Station…).",
+        "es": "Una estación seguida no ha enviado ningún nivel nuevo desde hace 6 horas (avería, mantenimiento, estación dañada por una crecida…)."
+      },
       "fields": [
         {
-          "key": "device",
+          "key": "station",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "label": {
+            "en": "Station",
+            "fr": "Station",
+            "de": "Station",
+            "es": "Estación"
+          }
         }
       ],
-      "outputs": [
+      "variables": [
         {
-          "key": "signalled",
-          "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "key": "station_name",
+          "type": "string",
+          "label": {
+            "en": "Station name",
+            "fr": "Nom de la station",
+            "de": "Name der Station",
+            "es": "Nombre de la estación"
+          }
+        },
+        {
+          "key": "river",
+          "type": "string",
+          "label": {
+            "en": "River or lake",
+            "fr": "Cours d'eau ou lac",
+            "de": "Gewässer",
+            "es": "Río o lago"
+          }
+        },
+        {
+          "key": "last_reading",
+          "type": "string",
+          "label": {
+            "en": "Date of the last reading",
+            "fr": "Date de la dernière mesure",
+            "de": "Datum der letzten Messung",
+            "es": "Fecha de la última medición"
+          }
+        }
+      ]
+    },
+    {
+      "key": "readings_resumed",
+      "label": {
+        "en": "Station sends readings again",
+        "fr": "La station émet de nouveau",
+        "de": "Station sendet wieder Messwerte",
+        "es": "La estación vuelve a enviar mediciones"
+      },
+      "description": {
+        "en": "A followed station that was silent sends readings again.",
+        "fr": "Une station suivie qui était muette envoie de nouveau des mesures.",
+        "de": "Eine verfolgte Station, die still war, sendet wieder Messwerte.",
+        "es": "Una estación seguida que estaba sin datos vuelve a enviar mediciones."
+      },
+      "fields": [
+        {
+          "key": "station",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Station",
+            "fr": "Station",
+            "de": "Station",
+            "es": "Estación"
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "station_name",
+          "type": "string",
+          "label": {
+            "en": "Station name",
+            "fr": "Nom de la station",
+            "de": "Name der Station",
+            "es": "Nombre de la estación"
+          }
+        },
+        {
+          "key": "river",
+          "type": "string",
+          "label": {
+            "en": "River or lake",
+            "fr": "Cours d'eau ou lac",
+            "de": "Gewässer",
+            "es": "Río o lago"
+          }
+        },
+        {
+          "key": "last_reading",
+          "type": "string",
+          "label": {
+            "en": "Date of the last reading",
+            "fr": "Date de la dernière mesure",
+            "de": "Datum der letzten Messung",
+            "es": "Fecha de la última medición"
+          }
         }
       ]
     }
   ],
   "widgets": [
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "stations",
+      "label": {
+        "en": "IMGW-PIB",
+        "fr": "IMGW-PIB",
+        "de": "IMGW-PIB",
+        "es": "IMGW-PIB"
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Followed stations: water level, trend and alert level.",
+        "fr": "Stations suivies : hauteur d'eau, tendance et niveau d'alerte.",
+        "de": "Verfolgte Stationen: Wasserstand, Tendenz und Alarmstufe.",
+        "es": "Estaciones seguidas: nivel del agua, tendencia y nivel de alerta."
+      },
+      "icon": "droplet",
+      "settings": [
+        {
+          "key": "station",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Station",
+            "fr": "Station",
+            "de": "Station",
+            "es": "Estación"
+          },
+          "description": {
+            "en": "Leave empty to list every station (10 at most); pick one for its details.",
+            "fr": "Laissez vide pour lister toutes les stations (10 au plus) ; choisissez-en une pour son détail.",
+            "de": "Leer lassen, um alle Stationen aufzulisten (höchstens 10); wähle eine für ihre Details.",
+            "es": "Déjelo vacío para listar todas las estaciones (10 como máximo); elija una para ver su detalle."
+          }
+        }
+      ]
     }
   ]
 }
