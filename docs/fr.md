@@ -55,7 +55,7 @@ configuration.
 Cliquez sur **« Chercher des stations »** dans la configuration. Laissez le champ vide pour
 lister les stations autour de votre maison (20 km, ou la distance choisie), ou tapez :
 
-- un nom de station : `Wrocław`, `wroclaw` ou `WROCLAW` (la casse et les lettres polonaises sont
+- un nom de station : `Głogów`, `glogow` ou `GLOGOW` (la casse et les lettres polonaises sont
   ignorées) ;
 - un cours d'eau ou un lac : `Wisła`, `Odra`, `Drużno` (les 10 plus proches, ou les 10 premières
   par cours d'eau) ;

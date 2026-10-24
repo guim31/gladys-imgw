@@ -128,8 +128,10 @@ Versions are bumped by the **Release** workflow (Actions → Release), never by 
 - The Home Assistant [`imgw_pib`](https://www.home-assistant.io/integrations/imgw_pib/)
   integration and its library [bieniu/imgw-pib](https://github.com/bieniu/imgw-pib) (both
   Apache-2.0), read for the API usage; no code copied.
-- The cover shows the IMGW-PIB logo, from [imgw.pl](https://www.imgw.pl), on the colours of
-  the institute.
+- The cover shows the official IMGW-PIB logo, as served by the institute's websites
+  (`shared.imgw.pl/web-components/top/assets/images/logo/imgw-pib.svg`; also on
+  [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Logo_IMGW.png), public domain),
+  enlarged on the navy blue of the institute.
 
 Not affiliated with IMGW-PIB.
 

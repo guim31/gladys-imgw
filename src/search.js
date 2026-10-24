@@ -7,7 +7,7 @@
 //   - nothing: the stations around the house (its location in Gladys);
 //   - a station id (152210170);
 //   - words: matched against the station, river and province names
-//     ("Wrocław", "Wisła", "Odra Słubice", "mazowieckie"), case and Polish
+//     ("Głogów", "Wisła", "Odra Słubice", "mazowieckie"), case and Polish
 //     letters ignored. The matches are listed nearest to the house first, else
 //     by river and name.
 //

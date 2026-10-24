@@ -55,7 +55,7 @@ configuración.
 Pulse **«Buscar estaciones»** en la configuración. Deje el campo vacío para enumerar las
 estaciones alrededor de su casa (20 km, o la distancia elegida), o escriba:
 
-- un nombre de estación: `Wrocław`, `wroclaw` o `WROCLAW` (se ignoran mayúsculas y letras
+- un nombre de estación: `Głogów`, `glogow` o `GLOGOW` (se ignoran mayúsculas y letras
   polacas);
 - un río o un lago: `Wisła`, `Odra`, `Drużno` (las 10 más cercanas, o las 10 primeras por río);
 - ambos: `Odra Słubice`;

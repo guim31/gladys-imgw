@@ -281,10 +281,10 @@
             "es": "Qué"
           },
           "description": {
-            "en": "Empty: around your house. Or a station name (Wrocław), a river (Wisła, Odra), both (Odra Słubice), a province (dolnośląskie) or a station id.",
-            "fr": "Vide : autour de votre maison. Ou un nom de station (Wrocław), un cours d'eau (Wisła, Odra), les deux (Odra Słubice), une voïvodie (dolnośląskie) ou un identifiant.",
-            "de": "Leer: rund um dein Haus. Oder ein Stationsname (Wrocław), ein Gewässer (Wisła, Odra), beides (Odra Słubice), eine Woiwodschaft (dolnośląskie) oder eine Stations-ID.",
-            "es": "Vacío: alrededor de su casa. O un nombre de estación (Wrocław), un río (Wisła, Odra), ambos (Odra Słubice), un voivodato (dolnośląskie) o un identificador."
+            "en": "Empty: around your house. Or a station name (Głogów), a river (Wisła, Odra), both (Odra Słubice), a province (dolnośląskie) or a station id.",
+            "fr": "Vide : autour de votre maison. Ou un nom de station (Głogów), un cours d'eau (Wisła, Odra), les deux (Odra Słubice), une voïvodie (dolnośląskie) ou un identifiant.",
+            "de": "Leer: rund um dein Haus. Oder ein Stationsname (Głogów), ein Gewässer (Wisła, Odra), beides (Odra Słubice), eine Woiwodschaft (dolnośląskie) oder eine Stations-ID.",
+            "es": "Vacío: alrededor de su casa. O un nombre de estación (Głogów), un río (Wisła, Odra), ambos (Odra Słubice), un voivodato (dolnośląskie) o un identificador."
           },
           "placeholder": {
             "en": "e.g. Wisła",

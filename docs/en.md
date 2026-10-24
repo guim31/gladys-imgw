@@ -55,7 +55,7 @@ configuration.
 Click **"Find stations"** in the configuration. Leave the field empty to list the stations
 around your house (20 km, or the distance chosen), or type:
 
-- a station name: `Wrocław`, `wroclaw` or `WROCLAW` (case and Polish letters are ignored);
+- a station name: `Głogów`, `glogow` or `GLOGOW` (case and Polish letters are ignored);
 - a river or a lake: `Wisła`, `Odra`, `Drużno` (the 10 nearest, or the first 10 by river);
 - both: `Odra Słubice`;
 - a province: `dolnośląskie`;

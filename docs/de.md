@@ -55,7 +55,7 @@ Konfiguration entfernst.
 Klicke in der Konfiguration auf **„Stationen suchen“**. Lass das Feld leer, um die Stationen
 rund um dein Haus aufzulisten (20 km oder die gewählte Entfernung), oder gib ein:
 
-- einen Stationsnamen: `Wrocław`, `wroclaw` oder `WROCLAW` (Groß- und Kleinschreibung und
+- einen Stationsnamen: `Głogów`, `glogow` oder `GLOGOW` (Groß- und Kleinschreibung und
   polnische Buchstaben werden ignoriert);
 - ein Gewässer oder einen See: `Wisła`, `Odra`, `Drużno` (die 10 nächsten oder die ersten 10
   nach Gewässer);
