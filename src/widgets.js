@@ -41,7 +41,7 @@ export const TEXT = {
   alert: {
     en: 'Warning level reached: ',
     fr: 'Niveau de vigilance atteint : ',
-    de: 'Warnstufe erreicht: ',
+    de: 'Warnstand erreicht: ',
     es: 'Nivel de aviso alcanzado: ',
   },
   height: { en: 'Water level', fr: "Hauteur d'eau", de: 'Wasserstand', es: 'Nivel del agua' },
@@ -51,14 +51,14 @@ export const TEXT = {
   warningLevel: {
     en: 'Warning level',
     fr: 'Niveau de vigilance',
-    de: 'Warnstufe',
+    de: 'Warnstand',
     es: 'Nivel de aviso',
   },
-  alarmLevel: { en: 'Alarm level', fr: "Niveau d'alarme", de: 'Alarmstufe', es: 'Nivel de alarma' },
+  alarmLevel: { en: 'Alarm level', fr: "Niveau d'alarme", de: 'Alarmstand', es: 'Nivel de alarma' },
   noThresholds: {
     en: 'No alert levels',
     fr: "Pas de niveaux d'alerte",
-    de: 'Keine Alarmstufen',
+    de: 'Keine Warn- und Alarmstände',
     es: 'Sin niveles de alerta',
   },
   trend: { en: 'Trend', fr: 'Tendance', de: 'Tendenz', es: 'Tendencia' },
@@ -71,7 +71,7 @@ export const TEXT = {
   silent: {
     en: 'Silent since ',
     fr: 'Muette depuis le ',
-    de: 'Still seit ',
+    de: 'Keine Daten seit ',
     es: 'Sin datos desde ',
   },
   waiting: { en: 'Waiting', fr: 'En attente', de: 'Wartet', es: 'En espera' },
@@ -108,7 +108,7 @@ export function stationValue(view, language) {
     return t(TEXT.waiting, language);
   }
   if (view.height === null) {
-    return clip(`${t(TEXT.silent, language)}${formatDate(view.lastReadingAt, language)}`);
+    return clip(`${t(TEXT.silent, language)}${formatDate(view.lastReadingAt, language, view.now)}`);
   }
   const height = formatHeight(view.height, language);
   return clip(view.trend ? `${height}, ${TREND_NAMES[language][view.trend]}` : height);
@@ -121,7 +121,8 @@ function footer(monitor, ids, language, link) {
     {
       type: 'text',
       variant: 'caption',
-      text: updated === null ? source : `${source} · ${formatDate(updated, language)}`,
+      text:
+        updated === null ? source : `${source} · ${formatDate(updated, language, monitor.now())}`,
     },
     { type: 'button', label: t(TEXT.site, language), icon: 'external-link', link: { url: link } },
   ];
@@ -208,7 +209,7 @@ function detail(monitor, id, language) {
     value:
       view.lastReadingAt === null
         ? t(TEXT.waiting, language)
-        : formatDate(view.lastReadingAt, language),
+        : formatDate(view.lastReadingAt, language, view.now),
     color: view.fresh ? WIDGET_COLORS.SUCCESS : WIDGET_COLORS.WARNING,
     icon: 'clock',
   });

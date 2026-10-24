@@ -61,6 +61,10 @@ export function createApi() {
     stations,
     down: false,
     requests: [],
+    // A station kept sending fresh levels (set with `clock`): the service is
+    // alive, so a silent followed station is the station's own silence.
+    pulse: null,
+    clock: null,
 
     /** A new water level (and optionally flow) of a station. */
     setLevel(id, time, value, { flow } = {}) {
@@ -97,6 +101,9 @@ export function createApi() {
       }
       if (url.href !== API_URL) {
         return { status: 404, text: async () => '<html>404</html>' };
+      }
+      if (api.pulse && api.clock) {
+        api.setLevel(api.pulse, api.clock.now() - 10 * 60 * 1000, 300);
       }
       return { status: 200, text: async () => JSON.stringify(stations) };
     },
@@ -135,6 +142,7 @@ export async function createWorld({
   clock = createClock(),
   dataDir = mkdtempSync(join(tmpdir(), 'gladys-imgw-')),
 } = {}) {
+  api.clock ??= clock;
   const gladys = createFakeGladys({ config, devices, houses });
   const store = new Store(dataDir);
   const app = registerHandlers(gladys, {

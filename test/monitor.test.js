@@ -149,7 +149,7 @@ test('a silent station is not published as fresh, and says since when', async (t
   assert.equal(lastValue(world, featureId(device, 'alert_level')), undefined);
   assert.equal(
     lastValue(world, featureId(device, 'last_reading')),
-    'Pas de nouvelle mesure depuis le 26/07 09:20',
+    'Pas de nouvelle mesure depuis le 26/07/2025 09:20',
   );
 });
 
@@ -222,7 +222,7 @@ test('Krubice rises past its warning then alarm levels: one event per crossing',
     river: 'Utrata',
     height: alarm + 5,
     threshold: 'alarm',
-    threshold_name: 'Alarmstufe',
+    threshold_name: 'Alarmstand',
     threshold_value: alarm,
     direction: 'rising',
   });
@@ -242,6 +242,7 @@ test('no trigger without a created device, nor for a stale reading or the first 
 
 test('readings stopped, then resumed: one event each', async (t) => {
   const { world, devices } = await followed(t, [WARSZAWA], { language: 'en' });
+  world.api.pulse = TRESTNO;
   for (let i = 0; i < 13; i += 1) {
     await cycle(world, 30);
   }
@@ -323,7 +324,7 @@ test('a name shared by several stations asks for its river', async (t) => {
   assert.deepEqual(world.monitor.followed(), []);
   assert.match(
     world.fake.connectionStatus.message.en,
-    /Several stations are named Krosno: give the river too/,
+    /Several stations are named Krosno: give the id, or the river/,
   );
 });
 
@@ -508,4 +509,61 @@ test('the houses of Gladys unreadable: no "give your house a location", tried ag
   await cycle(world, 30);
   assert.deepEqual(world.monitor.followed(), [TRESTNO, WARSZAWA, '152210040', '152219996']);
   assert.equal(world.fake.connectionStatus.connected, true);
+});
+
+test('an outage of IMGW-PIB, or a frozen answer, reports no station as silent', async (t) => {
+  const { world } = await followed(t, [WARSZAWA]);
+  world.api.down = 503;
+  for (let i = 0; i < 14; i += 1) {
+    await cycle(world, 30);
+  }
+  world.api.down = false;
+  // Back, but with the same old data for every station.
+  await cycle(world, 30);
+  await cycle(world, 30);
+  assert.deepEqual(world.fake.sceneEvents, []);
+});
+
+test('a feature never disappears because one answer lacks its value', async (t) => {
+  const { world } = await followed(t, [WARSZAWA]);
+  const raw = world.api.stations.find((s) => s.id_stacji === WARSZAWA);
+  raw.przeplyw = null;
+  raw.przeplyw_data = null;
+  await cycle(world, 30);
+  assert.deepEqual(discovered(world, WARSZAWA).features.map(keyOf), [
+    'height',
+    'flow',
+    'alert_level',
+    'last_reading',
+  ]);
+});
+
+test('a flow or a temperature stopped for months gives no feature', async (t) => {
+  const { devices } = await followed(t, [SROMOWCE]);
+  assert.deepEqual(devices[0].features.map(keyOf), [
+    'height',
+    'water_temperature',
+    'alert_level',
+    'last_reading',
+  ]);
+});
+
+test('a failed start does not leave "Initialization failed" once cycles work', async (t) => {
+  const world = await createWorld({ config: { stations: WARSZAWA }, connect: false });
+  t.after(() => world.app.stop());
+  const publish = world.gladys.publishDiscoveredDevices.bind(world.gladys);
+  let calls = 0;
+  t.mock.method(world.gladys, 'publishDiscoveredDevices', async (list) => {
+    calls += 1;
+    if (calls === 2) {
+      throw new Error('HTTP 503');
+    }
+    return publish(list);
+  });
+  await world.gladys.connect();
+  await world.app.ready;
+  assert.match(world.fake.connectionStatus.message.en, /Initialization failed/);
+  await cycle(world, 30);
+  assert.equal(world.fake.connectionStatus.connected, true);
+  assert.equal(world.fake.connectionStatus.message, undefined);
 });

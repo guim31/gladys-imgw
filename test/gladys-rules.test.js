@@ -51,7 +51,6 @@ for (const language of LANGUAGES) {
     const devices = world.fake.discoveredDevices;
     assert.ok(devices.length >= 10, `${devices.length} devices`);
     const featureCounts = new Set(devices.map((device) => device.features.length));
-    assert.ok(featureCounts.has(5), 'a station with flow, temperature and thresholds');
     assert.ok(featureCounts.has(4), 'a station with flow or temperature, and thresholds');
     assert.ok(featureCounts.has(3), 'a station with a level and thresholds only');
     assert.ok(featureCounts.has(2), 'a lake with a temperature only');

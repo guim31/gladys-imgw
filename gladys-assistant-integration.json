@@ -358,13 +358,13 @@
       "label": {
         "en": "Warning or alarm level crossed",
         "fr": "Niveau de vigilance ou d'alarme franchi",
-        "de": "Warn- oder Alarmstufe überschritten",
+        "de": "Warn- oder Alarmstand überschritten",
         "es": "Nivel de aviso o de alarma cruzado"
       },
       "description": {
         "en": "The water level of a followed station reaches its warning or alarm level (stan ostrzegawczy, stan alarmowy), or falls back below it.",
         "fr": "La hauteur d'une station suivie atteint son niveau de vigilance ou d'alarme (stan ostrzegawczy, stan alarmowy), ou repasse en dessous.",
-        "de": "Der Wasserstand einer verfolgten Station erreicht ihre Warn- oder Alarmstufe (stan ostrzegawczy, stan alarmowy) oder fällt wieder darunter.",
+        "de": "Der Wasserstand einer verfolgten Station erreicht ihren Warn- oder Alarmstand (stan ostrzegawczy, stan alarmowy) oder fällt wieder darunter.",
         "es": "El nivel de una estación seguida alcanza su nivel de aviso o de alarma (stan ostrzegawczy, stan alarmowy), o vuelve a bajar de él."
       },
       "fields": [
@@ -385,7 +385,7 @@
           "label": {
             "en": "Level",
             "fr": "Niveau",
-            "de": "Stufe",
+            "de": "Stand",
             "es": "Nivel"
           },
           "options": [
@@ -394,7 +394,7 @@
               "label": {
                 "en": "Warning level (stan ostrzegawczy)",
                 "fr": "Niveau de vigilance (stan ostrzegawczy)",
-                "de": "Warnstufe (stan ostrzegawczy)",
+                "de": "Warnstand (stan ostrzegawczy)",
                 "es": "Nivel de aviso (stan ostrzegawczy)"
               }
             },
@@ -403,7 +403,7 @@
               "label": {
                 "en": "Alarm level (stan alarmowy)",
                 "fr": "Niveau d'alarme (stan alarmowy)",
-                "de": "Alarmstufe (stan alarmowy)",
+                "de": "Alarmstand (stan alarmowy)",
                 "es": "Nivel de alarma (stan alarmowy)"
               }
             }
@@ -477,7 +477,7 @@
           "label": {
             "en": "Level code (warning, alarm)",
             "fr": "Code du niveau (warning, alarm)",
-            "de": "Kürzel der Stufe (warning, alarm)",
+            "de": "Kürzel des Stands (warning, alarm)",
             "es": "Código del nivel (warning, alarm)"
           }
         },
@@ -487,7 +487,7 @@
           "label": {
             "en": "Level, in words",
             "fr": "Niveau, en toutes lettres",
-            "de": "Stufe, ausgeschrieben",
+            "de": "Stand, ausgeschrieben",
             "es": "Nivel, en palabras"
           }
         },
@@ -497,7 +497,7 @@
           "label": {
             "en": "Value of the level (cm)",
             "fr": "Valeur du niveau (cm)",
-            "de": "Höhe der Stufe (cm)",
+            "de": "Höhe des Stands (cm)",
             "es": "Valor del nivel (cm)"
           }
         },
@@ -522,10 +522,10 @@
         "es": "La estación dejó de enviar mediciones"
       },
       "description": {
-        "en": "A followed station has sent no new water level for 6 hours (failure, maintenance, station damaged by a flood…).",
-        "fr": "Une station suivie n'a envoyé aucune nouvelle hauteur depuis 6 heures (panne, maintenance, station endommagée par une crue…).",
-        "de": "Eine verfolgte Station hat seit 6 Stunden keinen neuen Wasserstand gesendet (Ausfall, Wartung, durch Hochwasser beschädigte Station…).",
-        "es": "Una estación seguida no ha enviado ningún nivel nuevo desde hace 6 horas (avería, mantenimiento, estación dañada por una crecida…)."
+        "en": "A followed station has sent no new water level for 6 hours (failure, maintenance, station damaged by a flood…); 30 hours of water temperature for lake stations without a level.",
+        "fr": "Une station suivie n'a envoyé aucune nouvelle hauteur depuis 6 heures (panne, maintenance, station endommagée par une crue…) ; 30 heures de température pour les stations de lac sans hauteur.",
+        "de": "Eine verfolgte Station hat seit 6 Stunden keinen neuen Wasserstand gesendet (Ausfall, Wartung, durch Hochwasser beschädigte Station…); 30 Stunden Wassertemperatur bei Seestationen ohne Wasserstand.",
+        "es": "Una estación seguida no ha enviado ningún nivel nuevo desde hace 6 horas (avería, mantenimiento, estación dañada por una crecida…); 30 horas de temperatura en las estaciones de lago sin nivel."
       },
       "fields": [
         {

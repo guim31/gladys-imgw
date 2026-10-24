@@ -11,6 +11,7 @@ import assert from 'node:assert/strict';
 import {
   HOUSE,
   KRUBICE,
+  TRESTNO,
   WARSZAWA,
   captureLogs,
   create,
@@ -59,6 +60,7 @@ test('LOG_LEVEL=debug shows the cycles, never the house coordinates', async (t) 
 
 test('a station going silent and coming back is one info line each', async (t) => {
   const world = await followed(t, { around_home: '0' });
+  world.api.pulse = TRESTNO;
   const lines = captureLogs(t, 'info');
   for (let i = 0; i < 13; i += 1) {
     await cycle(world, 30);

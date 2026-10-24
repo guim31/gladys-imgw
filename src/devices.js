@@ -45,6 +45,8 @@ export const ALERT_LEVEL = { normal: 0, warning: 1, alarm: 2 };
 // in normal times; the 1997 flood peaked about 12 m on the Odra.
 export const HEIGHT_BOUNDS = [-500, 2000];
 export const FLOW_BOUND_M3S = 20000;
+// See capabilities.
+export const SERIES_ALIVE_MS = 7 * 24 * 60 * 60 * 1000;
 
 // Feature names, frozen at creation in Gladys (language of the configuration).
 export const NAMES = {
@@ -100,18 +102,36 @@ export function stationIdOfId(gladys, externalId) {
  * What a station offers, from what IMGW-PIB gives of it (see src/imgw.js
  * parseStation); a station rebuilt from a Gladys device carries `has`.
  */
-export function capabilities(station) {
+export function capabilities(station, now = Date.now()) {
   if (station.has) {
     return station.has;
   }
+  // A flow or a temperature older than this is a series the station stopped
+  // (44 flows were months old on 24/10/2026): no feature that never gets a value.
+  const recent = (reading) => Boolean(reading) && now - reading.t <= SERIES_ALIVE_MS;
   return {
     // A station without any water level yet still gets the feature: it is
     // the reason to follow it (a few lake stations only send a temperature).
     height: Boolean(station.level) || !station.temperature,
-    flow: Boolean(station.flow),
-    water_temperature: Boolean(station.temperature),
+    flow: recent(station.flow),
+    // Kept for the lake stations that have nothing else (Wigry), even old.
+    water_temperature:
+      recent(station.temperature) || (Boolean(station.temperature) && !station.level),
     alert_level: Boolean(station.thresholds),
   };
+}
+
+/**
+ * Features never disappear: a field missing from one answer must not make
+ * Gladys offer an "Update" that would drop the feature and its history.
+ */
+export function mergeCapabilities(current, previous) {
+  if (!previous) {
+    return current;
+  }
+  return Object.fromEntries(
+    Object.keys(current).map((key) => [key, Boolean(current[key] || previous[key])]),
+  );
 }
 
 /** "Warszawa-Bulwary / Wisła", as IMGW-PIB lists them. */

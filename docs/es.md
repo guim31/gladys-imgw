@@ -82,6 +82,9 @@ profundidad**: es la lectura de la escala, sobre su propio cero. Compárelo con 
 la misma estación (mostrados en el widget), no con otra estación. Los parámetros del
 dispositivo contienen el identificador, el nombre, el río y el voivodato de la estación.
 
+Cuando una estación deja de enviar, Gladys conserva sus últimos valores, nivel de alerta
+incluido: la función «Última medición» y el widget indican desde cuándo.
+
 El nivel, el caudal y la temperatura son funciones numéricas: las escenas de Gladys ya pueden
 compararlos con cualquier valor propio («Nivel del agua por encima de 650 cm»).
 
@@ -108,7 +111,9 @@ Añada el widget **IMGW-PIB** a un panel.
 Los niveles son los que el IMGW-PIB publica para cada estación. Un nivel cuenta como alcanzado
 en cuanto el nivel del agua lo iguala; la bajada cuenta cuando el nivel está 2 cm por debajo, y
 solo entonces puede contar una nueva subida: un nivel que oscila alrededor de un umbral dispara
-una sola vez. Una estación queda sin datos tras 6 horas sin un nuevo nivel.
+una sola vez. Una estación queda sin datos tras 6 horas sin un nuevo nivel (30 horas sin temperatura en las
+pocas estaciones de lago que solo envían esta). Una caída del IMGW-PIB o de su acceso a Internet
+no dispara nada: una estación solo queda sin datos si las demás envían.
 
 Los disparadores solo se activan para un dispositivo creado, con una medición reciente, y no
 después de un reinicio de más de un día. Un umbral modificado por el IMGW-PIB se toma sin

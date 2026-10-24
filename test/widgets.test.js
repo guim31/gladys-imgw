@@ -61,9 +61,9 @@ test('the overview: one line per station, valid in every language', async (t) =>
   assert.deepEqual([zukowo.value, zukowo.color], ['555 cm', WIDGET_COLORS.NEUTRAL]);
   assert.deepEqual(
     [sromowce.value, sromowce.color],
-    ['Still seit 26.07., 09:20', WIDGET_COLORS.NEUTRAL],
+    ['Keine Daten seit 26.07.2025, 09:20', WIDGET_COLORS.NEUTRAL],
   );
-  assert.equal(wigry.value, 'Still seit 30.09., 08:00');
+  assert.equal(wigry.value, 'Keine Daten seit 30.09., 08:00');
   assert.match(widget.components.find((c) => c.type === 'text').text, /^Quelle: IMGW-PIB · /);
   assert.deepEqual(widget.components.at(-1).link, { url: 'https://hydro.imgw.pl/' });
 });

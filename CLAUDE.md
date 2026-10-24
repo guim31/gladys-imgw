@@ -275,3 +275,11 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
   « Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut
   Badawczy », plus « …zostały przetworzone » pour des données traitées (niveau d'alerte, tendance).
   Les deux sont dans la section « about » du manifeste, les docs (testé) et le README.
+- Relecture du 24/10 : le silence d'une station ne se juge que si la réponse contient des hauteurs
+  fraîches pour d'autres (sinon une panne de l'IMGW-PIB ou d'Internet déclencherait
+  `readings_stopped` pour toutes) ; les fonctionnalités sont « collantes » (`mergeCapabilities` :
+  un champ absent d'une réponse ne retire jamais une fonctionnalité, ce qui ferait proposer une
+  « Mise à jour » destructrice) ; un débit ou une température arrêtés depuis plus de 7 jours ne
+  créent pas de fonctionnalité ; les dates à plus de 300 jours portent leur année ;
+  `Number(' ')` vaut 0 (un blanc n'est pas une valeur) ; `wojewodztwo` peut valoir `-`.
+- Allemand : « Warnstand / Alarmstand » pour les seuils, « Alarmstufe (0 bis 2) » pour l'état.

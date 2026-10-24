@@ -49,12 +49,19 @@ async function candidates(monitor, text, radiusKm, stations) {
     found = [...stations.values()].filter((station) => Monitor.matches(station, words));
   }
   const list = found.map((station) => ({ station, km: distanceTo(house, station) }));
-  list.sort((a, b) =>
-    a.km !== null && b.km !== null
-      ? a.km - b.km
-      : (a.station.river ?? '').localeCompare(b.station.river ?? '', 'pl') ||
-        a.station.name.localeCompare(b.station.name, 'pl'),
-  );
+  // Nearest first; stations without coordinates after, by river and name.
+  const byName = (a, b) =>
+    (a.station.river ?? '').localeCompare(b.station.river ?? '', 'pl') ||
+    a.station.name.localeCompare(b.station.name, 'pl');
+  list.sort((a, b) => {
+    if (a.km !== null && b.km !== null) {
+      return a.km - b.km;
+    }
+    if (a.km !== null || b.km !== null) {
+      return a.km === null ? 1 : -1;
+    }
+    return byName(a, b);
+  });
   return { list };
 }
 

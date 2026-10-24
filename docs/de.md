@@ -1,7 +1,7 @@
 # IMGW-PIB
 
 Bringt die **Wasserstände der Flüsse und Seen Polens** (Wisła, Odra, Warta, Bug, die Seen
-Masurens und Pommerns, die Küste: rund 900 Stationen) mit ihren **Warn- und Alarmstufen** nach
+Masurens und Pommerns, die Küste: rund 900 Stationen) mit ihren **Warn- und Alarmständen** nach
 Gladys, aus den öffentlichen Daten des **IMGW-PIB**, des polnischen Instituts für Meteorologie
 und Wasserwirtschaft. Ohne Konto, ohne Schlüssel.
 
@@ -14,11 +14,11 @@ und Wasserwirtschaft. Ohne Konto, ohne Schlüssel.
 
 - **Ein Gerät pro verfolgter Station**: der **Wasserstand** (in cm, wie auf der Karte des
   IMGW-PIB), der **Abfluss** in m³/s und die **Wassertemperatur**, wenn die Station sie liefert,
-  die **Alarmstufe** (0 normal, 1 Warnstufe erreicht, 2 Alarmstufe erreicht), wenn das IMGW-PIB
+  die **Alarmstufe** (0 normal, 1 Warnstand erreicht, 2 Alarmstand erreicht), wenn das IMGW-PIB
   ihre Schwellen angibt, und das Datum der letzten Messung.
 - Eine Station, die nichts mehr sendet, wird als solche angezeigt („Keine neue Messung
   seit…“): Ein alter Wert wird nie wieder als frisch gesendet.
-- Drei **Szenenauslöser**: Die Warn- oder Alarmstufe wird erreicht oder verlassen, eine Station
+- Drei **Szenenauslöser**: Der Warn- oder Alarmstand wird erreicht oder verlassen, eine Station
   sendet keine Messwerte mehr, eine stille Station sendet wieder.
 - Ein **Dashboard-Widget**: deine Stationen, ihr Wasserstand, seine Tendenz (steigt,
   gleichbleibend, fällt) und ihre Alarmstufe.
@@ -74,14 +74,17 @@ Jede Zeile nennt ID, Name, Gewässer, Entfernung zu deinem Haus und den aktuelle
 | Wasserstand          | Flüssigkeitstiefe (cm) | Stand über dem Pegelnullpunkt, in cm (stan wody).                                                                       |
 | Abfluss (m³/s)       | Wasserdurchfluss       | In m³/s (Gladys hat keine Einheit m³/s: Der Name sagt es). Vom IMGW-PIB berechnet, an manchen Stationen Stunden später. |
 | Wassertemperatur     | Temperatur (°C)        | Rund hundert Stationen, einmal täglich gemessen (06:00 UTC).                                                            |
-| Alarmstufe (0 bis 2) | Risikostufe            | 0 unter der Warnstufe (stan ostrzegawczy), 1 ab dieser, 2 ab der Alarmstufe (stan alarmowy).                            |
+| Alarmstufe (0 bis 2) | Risikostufe            | 0 unter dem Warnstand (stan ostrzegawczy), 1 ab diesem, 2 ab dem Alarmstand (stan alarmowy).                            |
 | Letzte Messung       | Text                   | Datum des letzten Wasserstands oder „Keine neue Messung seit…“.                                                         |
 
 Eine Funktion gibt es nur, wenn die Station sie liefert: Rund 600 Stationen haben Warn- und
-Alarmstufen, Seestationen oft keine. Der **Wasserstand ist keine Tiefe**: Er ist die Ablesung
+Alarmstände, Seestationen oft keine. Der **Wasserstand ist keine Tiefe**: Er ist die Ablesung
 der Pegellatte über ihrem eigenen Nullpunkt. Vergleiche ihn mit den Schwellen derselben
 Station (im Widget angezeigt), nicht mit einer anderen Station. Die Geräteparameter enthalten
 ID, Name, Gewässer und Woiwodschaft der Station.
+
+Wird eine Station still, zeigt Gladys weiter ihre letzten Werte, die Alarmstufe eingeschlossen:
+Die Funktion „Letzte Messung“ und das Widget sagen, seit wann.
 
 Wasserstand, Abfluss und Temperatur sind numerische Funktionen: Gladys-Szenen können sie
 bereits mit einem beliebigen eigenen Wert vergleichen („Wasserstand über 650 cm“).
@@ -91,25 +94,27 @@ bereits mit einem beliebigen eigenen Wert vergleichen („Wasserstand über 650 
 Füge das Widget **IMGW-PIB** einem Dashboard hinzu.
 
 - **Ohne Einstellung**: eine Zeile pro verfolgter Station (höchstens 10) mit Wasserstand und
-  Tendenz, gefärbt nach ihrer Alarmstufe: grün unter der Warnstufe, orange auf der Warnstufe,
-  rot auf der Alarmstufe, grau ohne Schwellen oder ohne aktuelle Messung. Eine Überschrift
-  nennt die Stationen auf oder über ihrer Warnstufe.
+  Tendenz, gefärbt nach ihrer Alarmstufe: grün unter dem Warnstand, orange ab dem Warnstand,
+  rot ab dem Alarmstand, grau ohne Schwellen oder ohne aktuelle Messung. Eine Überschrift
+  nennt die Stationen auf oder über ihrem Warnstand.
 - **Mit gewählter Station**: ihr Wasserstand, Abfluss und ihre Wassertemperatur live, dann ihre
-  Lage, ihre Warn- und Alarmstufe, Tendenz und letzte Messung sowie ein Link zur Karte des
+  Lage, ihren Warn- und Alarmstand, Tendenz und letzte Messung sowie ein Link zur Karte des
   IMGW-PIB.
 
 ## Szenenauslöser
 
-| Auslöser                            | Filter                                                               | Variablen                                                                                         |
-| ----------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Warn- oder Alarmstufe überschritten | Station, Stufe (Warnung, Alarm), Richtung (erreicht, fällt darunter) | Name der Station, Gewässer, Wasserstand (cm), Kürzel und Name der Stufe, ihre Höhe (cm), Richtung |
-| Station sendet keine Messwerte mehr | Station                                                              | Name der Station, Gewässer, Datum der letzten Messung                                             |
-| Station sendet wieder Messwerte     | Station                                                              | Name der Station, Gewässer, Datum der letzten Messung                                             |
+| Auslöser                            | Filter                                                                      | Variablen                                                                                           |
+| ----------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Warn- oder Alarmstand überschritten | Station, Stand (Warnstand, Alarmstand), Richtung (erreicht, fällt darunter) | Name der Station, Gewässer, Wasserstand (cm), Kürzel und Name des Stands, seine Höhe (cm), Richtung |
+| Station sendet keine Messwerte mehr | Station                                                                     | Name der Station, Gewässer, Datum der letzten Messung                                               |
+| Station sendet wieder Messwerte     | Station                                                                     | Name der Station, Gewässer, Datum der letzten Messung                                               |
 
-Die Stufen sind die, die das IMGW-PIB für jede Station veröffentlicht. Eine Stufe gilt als
-erreicht, sobald der Wasserstand ihr gleicht; das Fallen zählt, sobald der Stand 2 cm darunter
+Die Stände sind die, die das IMGW-PIB für jede Station veröffentlicht. Ein Stand gilt als
+erreicht, sobald der Wasserstand ihm gleicht; das Fallen zählt, sobald der Stand 2 cm darunter
 liegt, und erst dann kann ein neues Steigen zählen: Ein Stand, der um eine Schwelle pendelt,
-löst einmal aus. Eine Station ist still nach 6 Stunden ohne neuen Wasserstand.
+löst einmal aus. Eine Station ist still nach 6 Stunden ohne neuen Wasserstand (30 Stunden ohne Wassertemperatur
+bei den wenigen Seestationen, die nur diese senden). Ein Ausfall des IMGW-PIB oder deines
+Internetzugangs löst nichts aus: Eine Station ist nur still, wenn die anderen senden.
 
 Die Auslöser feuern nur für ein angelegtes Gerät, bei einer frischen Messung und nicht nach
 einem Neustart von mehr als einem Tag. Eine vom IMGW-PIB geänderte Schwelle wird ohne
@@ -117,12 +122,12 @@ Auslösen übernommen.
 
 ## Szenenbeispiele
 
-- **Die Wisła in Warschau**: „Warn- oder Alarmstufe überschritten“, Station Warszawa-Bulwary,
-  Stufe „Warnstufe“, erreicht → Nachricht senden: „{{station_name}}: {{height}} cm, Warnstufe
+- **Die Wisła in Warschau**: „Warn- oder Alarmstand überschritten“, Station Warszawa-Bulwary,
+  Stand „Warnstand“, erreicht → Nachricht senden: „{{station_name}}: {{height}} cm, Warnstand
   ({{threshold_value}} cm) erreicht“.
-- **Kellerwache**: „Warn- oder Alarmstufe überschritten“, deine Station, Stufe „Alarmstufe“,
+- **Kellerwache**: „Warn- oder Alarmstand überschritten“, deine Station, Stand „Alarmstand“,
   erreicht → die Steckdose der Pumpe einschalten und die Familie benachrichtigen; derselbe
-  Auslöser mit „fällt darunter“ → „{{station_name}}: wieder unter der Alarmstufe“.
+  Auslöser mit „fällt darunter“ → „{{station_name}}: wieder unter dem Alarmstand“.
 - **Stationswache**: „Station sendet keine Messwerte mehr“ → eine Erinnerung, die Karte des
   IMGW-PIB anzusehen („{{station_name}} still seit {{last_reading}}“).
 
@@ -151,7 +156,7 @@ Auslösen übernommen.
 - **„Rund um mein Haus“ fügt nichts hinzu**: Gib deinem Haus einen Standort (Einstellungen,
   Häuser) oder wähle eine größere Entfernung. Rund 30 Stationen haben in den Daten keine
   Koordinaten und werden so nie gewählt: Füge sie per ID hinzu.
-- **Keine Alarmstufe**: Das IMGW-PIB gibt für diese Station keine Warn- und Alarmstufen an
+- **Keine Alarmstufe**: Das IMGW-PIB gibt für diese Station keine Warn- und Alarmstände an
   (viele Seen und Stauseen).
 - **Keine Wassertemperatur**: Nur rund hundert Stationen messen sie, einmal täglich.
 - **„Keine neue Messung seit…“**: Die Station sendet verspätet oder gar nicht (Ausfall,

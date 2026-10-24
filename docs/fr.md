@@ -83,6 +83,9 @@ pas une profondeur** : c'est la lecture de l'échelle, au-dessus de son propre z
 aux seuils de la même station (affichés dans le widget), pas à une autre station. Les
 paramètres de l'appareil donnent l'identifiant, le nom, le cours d'eau et la voïvodie.
 
+Quand une station devient muette, Gladys garde ses dernières valeurs, niveau d'alerte compris :
+la fonctionnalité « Dernière mesure » et le widget disent depuis quand.
+
 La hauteur, le débit et la température sont des fonctionnalités numériques : les scènes de
 Gladys savent déjà les comparer à une valeur de votre choix (« Hauteur d'eau au-dessus de
 650 cm »).
@@ -110,7 +113,9 @@ Ajoutez le widget **IMGW-PIB** à un tableau de bord.
 Les niveaux sont ceux que l'IMGW-PIB publie pour chaque station. Un niveau compte comme
 atteint dès que la hauteur l'égale ; la descente compte une fois la hauteur 2 cm en dessous,
 et seulement alors une nouvelle montée peut compter : une hauteur qui oscille autour d'un seuil
-ne déclenche qu'une fois. Une station est muette après 6 heures sans nouvelle hauteur.
+ne déclenche qu'une fois. Une station est muette après 6 heures sans nouvelle hauteur (30 heures sans température pour
+les quelques stations de lac qui n'envoient qu'elle). Une panne de l'IMGW-PIB ou de votre accès
+Internet ne déclenche rien : une station n'est muette que si les autres émettent.
 
 Les déclencheurs ne partent que pour un appareil créé, sur une mesure fraîche, et pas après un
 redémarrage de plus d'un jour. Un seuil modifié par l'IMGW-PIB est repris sans déclencher.

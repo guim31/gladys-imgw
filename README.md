@@ -26,7 +26,8 @@ and [gladys-ea-flood](https://github.com/guim31/gladys-ea-flood) (England).
 - **"Find stations"** in the Configuration screen: around your house, by name, by river or
   lake, by province or by id, with the distance and the current level.
 - **Scene triggers**: _Warning or alarm level crossed_ (reached, or falling back below with a
-  2 cm hysteresis), _Station stopped sending readings_ (6 hours without a water level) and
+  2 cm hysteresis), _Station stopped sending readings_ (6 hours without a water level, never during an outage
+  of the service itself) and
   _Station sends readings again_. A threshold of your own stays a Gladys device condition on
   the water level.
 - **Dashboard widget**: the followed stations with their level, trend and alert level, or the

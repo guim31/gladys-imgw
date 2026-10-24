@@ -50,7 +50,8 @@ export function parseDate(text) {
 
 /** A number of the API (given as a string, "246" or "0.64"), or null. */
 export function parseNumber(value) {
-  if (value === null || value === undefined || value === '') {
+  // Number(' ') would be 0: a blank is no value.
+  if (value === null || value === undefined || String(value).trim() === '') {
     return null;
   }
   const number = Number(String(value).replace(',', '.'));
@@ -96,7 +97,7 @@ export function parseStation(raw) {
       .trim()
       .replace(/\s+/g, ' '),
     river: riverName(raw.rzeka),
-    province: raw.wojewodztwo ? String(raw.wojewodztwo) : null,
+    province: riverName(raw.wojewodztwo),
     latitude,
     longitude,
     km: parseNumber(raw.kilometr_biegu_rzeki),

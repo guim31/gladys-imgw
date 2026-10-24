@@ -12,7 +12,7 @@ import { LANGUAGES } from './config.js';
 export const THRESHOLD_NAMES = {
   en: { warning: 'warning level', alarm: 'alarm level' },
   fr: { warning: 'niveau de vigilance', alarm: "niveau d'alarme" },
-  de: { warning: 'Warnstufe', alarm: 'Alarmstufe' },
+  de: { warning: 'Warnstand', alarm: 'Alarmstand' },
   es: { warning: 'nivel de aviso', alarm: 'nivel de alarma' },
 };
 
@@ -20,7 +20,7 @@ export const THRESHOLD_NAMES = {
 export const ALERT_NAMES = {
   en: { normal: 'Normal', warning: 'Warning level', alarm: 'Alarm level' },
   fr: { normal: 'Normal', warning: 'Vigilance', alarm: 'Alarme' },
-  de: { normal: 'Normal', warning: 'Warnstufe', alarm: 'Alarmstufe' },
+  de: { normal: 'Normal', warning: 'Warnstand', alarm: 'Alarmstand' },
   es: { normal: 'Normal', warning: 'Aviso', alarm: 'Alarma' },
 };
 
@@ -45,7 +45,7 @@ export const STATUS = {
     initFailed: 'Initialization failed, check the integration logs.',
     down: 'IMGW-PIB does not answer: the readings will come back with it.',
     ambiguous: ({ names }) =>
-      `Several stations are named ${names}: give the river too (Krosno Wisłok), or the id.`,
+      `Several stations are named ${names}: give the id, or the river (Krosno Wisłok).`,
     unknown: ({ names }) => `Unknown station: ${names}. Use "Find stations".`,
     homeFailed:
       'Around my house: the nearest stations cannot be chosen yet, tried again at the next refresh.',
@@ -57,7 +57,7 @@ export const STATUS = {
     initFailed: "L'initialisation a échoué, consultez les logs de l'intégration.",
     down: 'IMGW-PIB ne répond pas : les mesures reviendront avec lui.',
     ambiguous: ({ names }) =>
-      `Plusieurs stations s'appellent ${names} : ajoutez le cours d'eau (Krosno Wisłok), ou l'identifiant.`,
+      `Plusieurs stations s'appellent ${names} : donnez l'identifiant, ou le cours d'eau (Krosno Wisłok).`,
     unknown: ({ names }) => `Station inconnue : ${names}. Utilisez « Chercher des stations ».`,
     homeFailed:
       'Autour de ma maison : les stations les plus proches ne peuvent pas encore être choisies, nouvel essai à la prochaine mise à jour.',
@@ -70,7 +70,7 @@ export const STATUS = {
     initFailed: 'Initialisierung fehlgeschlagen, sieh dir die Protokolle der Integration an.',
     down: 'IMGW-PIB antwortet nicht: Die Messwerte kommen mit ihm zurück.',
     ambiguous: ({ names }) =>
-      `Mehrere Stationen heißen ${names}: Gib auch das Gewässer an (Krosno Wisłok) oder die ID.`,
+      `Mehrere Stationen heißen ${names}: Gib die ID an oder das Gewässer (Krosno Wisłok).`,
     unknown: ({ names }) => `Unbekannte Station: ${names}. Nutze „Stationen suchen“.`,
     homeFailed:
       'Rund um mein Haus: Die nächsten Stationen können noch nicht gewählt werden, neuer Versuch bei der nächsten Aktualisierung.',
@@ -82,7 +82,7 @@ export const STATUS = {
     initFailed: 'La inicialización ha fallado, consulte los registros de la integración.',
     down: 'IMGW-PIB no responde: las mediciones volverán con él.',
     ambiguous: ({ names }) =>
-      `Varias estaciones se llaman ${names}: indique también el río (Krosno Wisłok) o el identificador.`,
+      `Varias estaciones se llaman ${names}: indique el identificador o el río (Krosno Wisłok).`,
     unknown: ({ names }) => `Estación desconocida: ${names}. Use «Buscar estaciones».`,
     homeFailed:
       'Alrededor de mi casa: aún no se pueden elegir las estaciones más cercanas, nuevo intento en la próxima actualización.',
@@ -155,11 +155,17 @@ export function join(...messages) {
   );
 }
 
-/** A date in the user's time zone (TZ, set by the Gladys supervisor), e.g. "13/10 18:35". */
-export function formatDate(time, language) {
+const YEAR_SHOWN_AFTER_MS = 300 * 24 * 60 * 60 * 1000;
+
+/**
+ * A date in the user's time zone (TZ, set by the Gladys supervisor), e.g.
+ * "13/10 18:35", with its year when it is far from `now` ("26/07/2025 09:20").
+ */
+export function formatDate(time, language, now = Date.now()) {
   return new Intl.DateTimeFormat(language === 'en' ? 'en-GB' : language, {
     day: '2-digit',
     month: '2-digit',
+    ...(Math.abs(now - time) > YEAR_SHOWN_AFTER_MS ? { year: 'numeric' } : {}),
     hour: '2-digit',
     minute: '2-digit',
   }).format(new Date(time));

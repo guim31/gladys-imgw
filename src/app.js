@@ -54,6 +54,8 @@ export function registerHandlers(gladys, options = {}) {
       await monitor.start(config);
     } catch (err) {
       logger.error('Initialization failed', err);
+      // The next cycle must write its status again over this one.
+      monitor.statusMessage = undefined;
       await gladys.setConnectionStatus(false, render(STATUS, 'initFailed')).catch(() => {});
     } finally {
       resolveReady();

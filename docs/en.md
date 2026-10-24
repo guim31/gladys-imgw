@@ -81,6 +81,9 @@ of the gauge staff, above its own zero. Compare it with the thresholds of the sa
 (shown in the widget), not with another station. The device parameters hold the station id,
 its name, its river and its province.
 
+When a station goes silent, Gladys keeps showing its last values, the alert level included:
+the "Last reading" feature and the widget say since when.
+
 The water level, flow and temperature are numeric features: Gladys scenes can already compare
 them with any value of your own ("Water level above 650 cm").
 
@@ -106,7 +109,9 @@ Add the **IMGW-PIB** widget to a dashboard.
 The levels are those IMGW-PIB publishes for each station. A level counts as reached as soon as
 the water level equals it; the fall counts once the level is 2 cm below it, and only then can a
 new rise count: a level wobbling around a threshold fires once. A station is silent after 6
-hours without a new water level.
+hours without a new water level (30 hours without a water temperature for the few lake
+stations that only send that). An outage of IMGW-PIB or of your Internet access fires
+nothing: a station is only silent while the others send.
 
 Triggers only fire for a device you created, on a fresh reading, and not after a restart longer
 than a day. A threshold changed by IMGW-PIB is taken without firing.

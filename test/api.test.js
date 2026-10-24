@@ -58,6 +58,8 @@ test('missing values: no thresholds, no water level, an old level', () => {
   assert.equal(parseStation(raw(SROMOWCE)).level.t, Date.parse('2025-07-26T07:20:00Z'));
   assert.equal(parseStation({ ...raw(WARSZAWA), stan_alarmowy: null }).thresholds, null);
   assert.equal(parseStation({ ...raw(WARSZAWA), przeplyw: '0.64' }).flow.v, 0.64);
+  assert.equal(parseStation({ ...raw(WARSZAWA), stan_wody: ' ' }).level, null, 'blank is no value');
+  assert.equal(parseStation({ ...raw(WARSZAWA), wojewodztwo: '-' }).province, null);
 });
 
 test('one request for every station', async () => {

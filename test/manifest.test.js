@@ -83,6 +83,7 @@ test('the scene triggers the monitor fires are declared, with their filters and 
   const world = await createWorld({ config: { stations: KRUBICE } });
   t.after(() => world.app.stop());
   const device = await create(world, KRUBICE);
+  world.api.pulse = '152210170';
   world.api.setLevel(KRUBICE, world.clock.now(), world.api.thresholds(KRUBICE).alarm + 20);
   await cycle(world, 30);
   world.api.setLevel(KRUBICE, world.clock.now(), 100);

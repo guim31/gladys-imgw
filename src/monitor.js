@@ -32,6 +32,7 @@ import {
   buildDevice,
   capabilities,
   displayName,
+  mergeCapabilities,
   stationIdOfId,
   stationIds,
 } from './devices.js';
@@ -585,14 +586,27 @@ export class Monitor {
       for (const id of ids) {
         const station = stations.get(id);
         if (station) {
-          this.data.stations[id] = station;
+          const known = this.station(id);
+          const has = mergeCapabilities(
+            capabilities(station, this.now()),
+            known ? capabilities(known) : null,
+          );
+          this.data.stations[id] = { ...station, has };
           changed = (await this.fold(id, station)) || changed;
         }
       }
       this.forget(ids);
     }
-    for (const id of ids) {
-      changed = (await this.noteSilence(id)) || changed;
+    // Silence is a station's when the service answers with fresh data for the
+    // others: an outage of IMGW-PIB (or of the Internet access), or a frozen
+    // answer, must not report every station as failed.
+    const newest = stations
+      ? Math.max(-Infinity, ...[...stations.values()].map((s) => s.level?.t ?? -Infinity))
+      : null;
+    if (stations && (stations.size === 0 || this.isFresh(newest))) {
+      for (const id of ids) {
+        changed = (await this.noteSilence(id)) || changed;
+      }
     }
     if (this.discoveredKey() !== before) {
       await this.publishDiscovered();
@@ -693,7 +707,7 @@ export class Monitor {
           station: stationIds(this.gladys, id).device,
           station_name: station.name,
           river: station.river ?? null,
-          last_reading: last !== null ? formatDate(last, this.config.language) : null,
+          last_reading: last !== null ? formatDate(last, this.config.language, this.now()) : null,
         })
         .catch((err) => logger.warn(`Readings event refused: ${err.message}`));
     }
@@ -811,7 +825,7 @@ export class Monitor {
       }
       const last = this.lastReadingAt(id);
       if (last !== null) {
-        const date = formatDate(last, language);
+        const date = formatDate(last, language, this.now());
         states.push({
           device_feature_external_id: featureIds.last_reading,
           text: this.isFresh(last, this.lastReadingSeries(id))
@@ -880,6 +894,7 @@ export class Monitor {
       trend: fresh ? (reading.trend ?? null) : null,
       lastReadingAt: last,
       fresh,
+      now: this.now(),
     };
   }
 
