@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-24
+
 ### Added
 
 - One Gladys device per IMGW-PIB hydrological station of Poland: water level (cm), flow (m³/s)
@@ -30,3 +32,6 @@ the notes of the version's GitHub Release.
 - Refresh every 20, 30 or 60 minutes by the integration itself, with one request for all the
   stations, without relying on Gladys polling.
 - Texts and documentation in English, French, German and Spanish.
+
+[Unreleased]: https://github.com/guim31/gladys-imgw/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/guim31/gladys-imgw/releases/tag/v1.0.0
