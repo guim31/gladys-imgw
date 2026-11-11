@@ -36,7 +36,7 @@ and [gladys-ea-flood](https://github.com/guim31/gladys-ea-flood) (England).
 
 ## Requirements
 
-- Gladys Assistant **5.1.0** or later (widgets and scene triggers).
+- Gladys Assistant **5.3.0** or later (catalog countries; 5.1.0 for widgets and scene triggers).
 - Internet access from Gladys to `danepubliczne.imgw.pl`.
 - For "around my house": the location of your house in Gladys. The integration declares
   `location: true`, shown on the install screen.

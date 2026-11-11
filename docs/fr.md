@@ -27,7 +27,7 @@ polonais de météorologie et de gestion de l'eau. Sans compte, sans clé.
 
 ## Prérequis
 
-- Gladys Assistant **5.1.0** ou plus récent.
+- Gladys Assistant **5.3.0** ou plus récent.
 - Un accès Internet depuis Gladys : l'intégration lit `danepubliczne.imgw.pl`.
 - Pour « Autour de ma maison » : la position de votre maison dans Gladys (Paramètres, Maisons).
   L'intégration la demande à l'installation (permission « localisation »). Elle ne sert que
