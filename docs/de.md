@@ -27,7 +27,7 @@ und Wasserwirtschaft. Ohne Konto, ohne Schlüssel.
 
 ## Voraussetzungen
 
-- Gladys Assistant **5.1.0** oder neuer.
+- Gladys Assistant **5.3.0** oder neuer.
 - Internetzugang von Gladys aus: Die Integration liest `danepubliczne.imgw.pl`.
 - Für „Rund um mein Haus“: der Standort deines Hauses in Gladys (Einstellungen, Häuser). Die
   Integration fragt bei der Installation danach (Berechtigung „Standort“). Er dient nur im

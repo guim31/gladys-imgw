@@ -27,7 +27,7 @@ y gestión del agua. Sin cuenta, sin clave.
 
 ## Requisitos
 
-- Gladys Assistant **5.1.0** o posterior.
+- Gladys Assistant **5.3.0** o posterior.
 - Acceso a Internet desde Gladys: la integración lee `danepubliczne.imgw.pl`.
 - Para «Alrededor de mi casa»: la ubicación de su casa en Gladys (Ajustes, Casas). La
   integración la solicita en la instalación (permiso «ubicación»). Solo se usa dentro del
