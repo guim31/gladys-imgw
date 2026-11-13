@@ -1,6 +1,6 @@
 {
   "name": "gladys-imgw",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Gladys Assistant external integration: water levels and alert levels of Polish rivers and lakes (IMGW-PIB).",
   "type": "module",
